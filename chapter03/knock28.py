@@ -29,9 +29,13 @@ for tmp in [check.match(m) for m in memo]:
 
 r1 = re.compile("'+")
 r2 = re.compile('\[\[(.+\||)(.+?)\]\]')
+r3 = re.compile('\{\{(.+\||)(.+?)\}\}')
+r4 = re.compile('<\s*?/*?\s*?br\s*?/*?\s*>')
 
 for k, v in ans.items():
     v = r1.sub('', v)
     v = r2.sub(r'\2', v)
+    v = r3.sub(r'\2', v)
+    v = r4.sub('', v)
     ans[k] = v
 print(ans)
