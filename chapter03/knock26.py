@@ -7,25 +7,26 @@ text = text.replace("''", '').split('\n')
 
 memo, flag = [], False
 template = '基礎情報'
-p = re.compile('\|(.+?)=(.+)')
-p1 = re.compile('\{\{' + template)
-p2 = re.compile('\}\}')
-p3 = re.compile('\|')
-p4 = re.compile('<ref(\s|>).+?(</ref>|$)')
+check = re.compile('\|(.+?)\s=\s(.+)')
+check1 = re.compile('\{\{' + template)
+check2 = re.compile('\}\}')
+check3 = re.compile('\|')
+check4 = re.compile('<ref(\s|>).+?(</ref>|$)')
 
 for t in text:
     if flag:
-        if p2.match(t):
+        if check2.match(t):
             break
-        if p3.match(t):
-            memo.append(p4.sub('', t.strip()))
-    if p1.match(t):
+        if check3.match(t):
+            memo.append(check4.sub('', t.strip()))
+    if check1.match(t):
         flag = True
 
 ans = {}
-for tmp in [p.match(m) for m in memo]:
-    ans[tmp.group(1).replace(' ', '')] = tmp.group(2).replace(' ', '')
+for tmp in [check.match(m) for m in memo]:
+    if tmp:
+        ans[tmp.group(1)] = tmp.group(2)
 
-check = re.compile("'+")
-ans = {k: check.sub('', v) for k, v in ans.items()}
+r1 = re.compile("'+")
+ans = {k: r1.sub('', v) for k, v in ans.items()}
 print(ans)

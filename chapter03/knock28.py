@@ -7,35 +7,35 @@ text = text.replace("''", '').split('\n')
 
 memo, flag = [], False
 template = '基礎情報'
-p = re.compile('\|(.+?)=(.+)')
-p1 = re.compile('\{\{' + template)
-p2 = re.compile('\}\}')
-p3 = re.compile('\|')
-p4 = re.compile('<ref(\s|>).+?(</ref>|$)')
+check = re.compile('\|(.+?)\s=\s(.+)')
+check1 = re.compile('\{\{' + template)
+check2 = re.compile('\}\}')
+check3 = re.compile('\|')
+check4 = re.compile('<ref(\s|>).+?(</ref>|$)')
 
 for t in text:
     if flag:
-        if p2.match(t):
+        if check2.match(t):
             break
-        if p3.match(t):
-            memo.append(p4.sub('', t.strip()))
-    if p1.match(t):
+        if check3.match(t):
+            memo.append(check4.sub('', t.strip()))
+    if check1.match(t):
         flag = True
 
-check = {}
 ans = {}
-for tmp in [p.match(m) for m in memo]:
-    check[tmp.group(1).replace(' ', '')] = tmp.group(2).replace(' ', '')
+for tmp in [check.match(m) for m in memo]:
+    if tmp:
+        ans[tmp.group(1)] = tmp.group(2)
 
-check1 = re.compile("'+")
-check2 = re.compile('\[\[(.+\||)(.+?)\]\]')
-check3 = re.compile('\{\{(.+\||)(.+?)\}\}')
-check4 = re.compile('<\s*?/*?\s*?br\s*?/*?\s*>')
+r1 = re.compile("'+")
+r2 = re.compile('\[\[(.+\||)(.+?)\]\]')
+r3 = re.compile('\{\{(.+\||)(.+?)\}\}')
+r4 = re.compile('<\s*?/*?\s*?br\s*?/*?\s*>')
 
-for k, v in check.items():
-    v = check1.sub('', v)
-    v = check2.sub(r'\2', v)
-    v = check3.sub(r'\2', v)
-    v = check4.sub('', v)
+for k, v in ans.items():
+    v = r1.sub('', v)
+    v = r2.sub(r'\2', v)
+    v = r3.sub(r'\2', v)
+    v = r4.sub('', v)
     ans[k] = v
 print(ans)
