@@ -15,6 +15,7 @@ with open('neko.txt.mecab', mode='rt', encoding='utf-8') as f:
     for line in f.read().split('EOS\n'):
         if line != '':
             memo.append(line)
+
 for line in memo:
     for block in parse_line(line):
         if block['pos'] == '動詞':

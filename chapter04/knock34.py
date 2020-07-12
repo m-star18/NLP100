@@ -17,7 +17,12 @@ with open('neko.txt.mecab', mode='rt', encoding='utf-8') as f:
             memo.append(line)
 
 for line in memo:
+    tmp = []
     for block in parse_line(line):
-        if block['pos'] == '動詞':
-            ans.append(block['surface'])
+        if block['pos'] == '名詞':
+            tmp.append(block['surface'])
+        else:
+            if len(tmp) >= 2:
+                ans.append(''.join(tmp))
+            tmp = []
 print(ans)

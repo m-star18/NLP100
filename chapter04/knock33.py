@@ -15,6 +15,7 @@ with open('neko.txt.mecab', mode='rt', encoding='utf-8') as f:
     for line in f.read().split('EOS\n'):
         if line != '':
             memo.append(line)
+
 for line in memo:
     line = parse_line(line)
     for bf, block, af in zip(line, line[1:], line[2:]):
